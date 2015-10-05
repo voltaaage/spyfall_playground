@@ -124,13 +124,14 @@ function generateNewGame(){
   return game;
 }
 
-function generateNewPlayer(game, name){
+function generateNewPlayer(game, name,isHost){
   var player = {
     gameID: game._id,
     name: name,
     role: null,
     isSpy: false,
-    isFirstPlayer: false
+    isFirstPlayer: false,
+    isHostPlayer: isHost
   };
 
   var playerID = Players.insert(player);
@@ -314,7 +315,7 @@ Template.createGame.events({
     }
 
     var game = generateNewGame();
-    var player = generateNewPlayer(game, playerName);
+    var player = generateNewPlayer(game, playerName, true);
 
     Meteor.subscribe('games', game.accessCode);
 

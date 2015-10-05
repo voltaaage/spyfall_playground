@@ -93,7 +93,9 @@
   <hr>
 
   <div class="button-container">
-    <button class="btn-start">{{_ "ui.start game" }}</button>
+    {{#if player.isHostPlayer}}
+      <button class="btn-start">{{_ "ui.start game" }}</button>
+    {{/if}}
     <button class="btn-leave">{{_ "ui.leave game" }}</button>
   </div>
 </template>
