@@ -103,6 +103,10 @@
 <template name="gameView">
   <h4><a href="#" class="game-countdown {{#if gameFinished }}finished{{/if}} {{#if game.paused }}paused{{/if}}">{{{ timeRemaining }}}</a></h4>
 
+  <div class="button-container">
+    <button id="btn-reset-timer">{{_ "ui.reset timer"}}</button>
+  </div>
+
   <div class="status-container">
     <button class="btn-toggle-status">{{_ "ui.show hide" }}</button>
 

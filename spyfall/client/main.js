@@ -124,14 +124,14 @@ function generateNewGame(){
   return game;
 }
 
-function generateNewPlayer(game, name,isHost){
+function generateNewPlayer(game, name, isHostPlayer){
   var player = {
     gameID: game._id,
     name: name,
     role: null,
     isSpy: false,
     isFirstPlayer: false,
-    isHostPlayer: isHost
+    isHostPlayer: isHostPlayer
   };
 
   var playerID = Players.insert(player);
@@ -372,7 +372,7 @@ Template.joinGame.events({
 
       if (game) {
         Meteor.subscribe('players', game._id);
-        player = generateNewPlayer(game, playerName);
+        player = generateNewPlayer(game, playerName, false);
 
         Session.set('urlAccessCode', null);
         Session.set("gameID", game._id);
@@ -452,6 +452,7 @@ Template.lobby.events({
     var game = getCurrentGame();
     var location = getRandomLocation();
     var players = Players.find({gameID: game._id});
+    
     var localEndTime = moment().add(game.lengthInMinutes, 'minutes');
     var gameEndTime = TimeSync.serverTime(localEndTime);
 
@@ -468,6 +469,12 @@ Template.lobby.events({
     assignRoles(players, location);
     
     Games.update(game._id, {$set: {state: 'inProgress', location: location, endTime: gameEndTime, paused: false, pausedTime: null}});
+  },
+  'click .btn-reset-timer':function(){
+    var game = getCurrentGame();
+    var localEndTime = moment().add(game.lengthInMinutes, 'minutes');
+    var gameEndTime = TimeSync.serverTime(localEndTime);
+    Games.update(game._id, {$set: {endTime: gameEndTime}});
   },
   'click .btn-toggle-qrcode': function () {
     $(".qrcode-container").toggle();
